@@ -25,6 +25,8 @@ open class BaseViewModel : ViewModel(), LifecycleObserver {
             block()
         } catch (e: Exception) {
             Log.e("BaseViewModel出错了", "==>${e.stackTraceToString()}")
+            // 此处接收到BaseRepository里的request抛出的异常
+            // 根据业务逻辑自行处理代码...
         }
     }
 
