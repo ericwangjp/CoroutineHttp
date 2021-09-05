@@ -1,8 +1,9 @@
 package com.common.httplib.interceptor
 
 import android.os.SystemClock
-import com.common.httplib.callback.DownloadCallback
 import com.common.httplib.model.Progress
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.ResponseBody
 import okio.*
@@ -20,9 +21,10 @@ import okio.*
  * Create: 2021/9/1 9:42 下午
  *
  */
-class ProgressResponseBody constructor(
+class ProgressResponseBody(
     private var responseBody: ResponseBody,
-    private var callback: DownloadCallback?
+    private val coroutine: CoroutineScope? = null,
+    private val progress: (suspend (Progress) -> Unit)? = null
 ) : ResponseBody() {
 
     private var lastRefreshTime: Long = 0
@@ -34,7 +36,7 @@ class ProgressResponseBody constructor(
     }
 
     override fun contentLength(): Long {
-        return responseBody.contentLength()?:0
+        return responseBody.contentLength() ?: 0
     }
 
     override fun source(): BufferedSource {
@@ -54,13 +56,14 @@ class ProgressResponseBody constructor(
                 val currentTime = SystemClock.elapsedRealtime()
                 val isUpdate = currentTime - lastRefreshTime >= updateInterval
                 val curProgress = (totalBytesRead * 100 / responseBody.contentLength()).toInt()
-                if (isUpdate && (curProgress > lastProgress)) {
+                if (isUpdate || (curProgress > lastProgress)) {
                     lastRefreshTime = currentTime
                     lastProgress = curProgress
-                    callback?.let {
-                        val progress =
+                    coroutine?.launch {
+                        // 主线程
+                        val updateProgress =
                             Progress(lastProgress, totalBytesRead, responseBody.contentLength())
-                        it.onProgress(progress)
+                        progress?.let { it(updateProgress) }
                     }
 
                 }

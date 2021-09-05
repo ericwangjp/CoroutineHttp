@@ -1,7 +1,8 @@
 package com.common.httplib.service
 
-import com.common.httplib.model.BaseResponse
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.*
 
 
@@ -21,15 +22,19 @@ interface DownloadService {
 
     @Multipart
     @POST("user/photo")
-    suspend fun <T> uploadFile(
+    suspend fun uploadFile(
         @Part("photo") photo: RequestBody?,
         @Part("description") description: RequestBody?
-    ): BaseResponse<T>
+    ): Response<ResponseBody>
 
+
+    //    https://imtt.dd.qq.com/16891/apk/708730C7F45D042B2EFF1738D4F49FE7.apk?fsname=com.tencent.mobileqq_8.8.23_2034.apk&csr=9dcc
     @Streaming
-    @GET("user/photo")
-    suspend fun <T> downloadFile(
-        @Part("photo") photo: RequestBody?,
-        @Part("description") description: RequestBody?
-    ): BaseResponse<T>
+//    @GET("708730C7F45D042B2EFF1738D4F49FE7.apk?fsname=com.tencent.mobileqq_8.8.23_2034.apk&csr=9dcc")
+    @GET
+    suspend fun downloadFile(
+        @Url url: String
+//        @Part("photo") photo: RequestBody?,
+//        @Part("description") description: RequestBody?
+    ): Response<ResponseBody>
 }

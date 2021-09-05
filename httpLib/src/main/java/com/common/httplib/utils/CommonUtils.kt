@@ -1,12 +1,5 @@
 package com.common.httplib.utils
 
-import com.common.httplib.config.HttpConfig
-import com.common.httplib.model.BaseResponse
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.withContext
-
 /**
  *
  * -----------------------------------------------------------------
@@ -36,3 +29,5 @@ import kotlinx.coroutines.withContext
 //        return@withContext result
 //    }
 //}
+
+

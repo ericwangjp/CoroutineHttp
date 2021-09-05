@@ -13,7 +13,7 @@ package com.common.httplib.model
  *
  */
 data class Progress constructor(
-    private var progress: Int = 0,
-    private var currentSize: Long = 0,
-    private var totalSize: Long = 0
+    var progress: Int = 0,
+    var currentSize: Long = 0,
+    var totalSize: Long = 0
 )

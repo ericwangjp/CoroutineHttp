@@ -4,33 +4,41 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import com.common.httplib.model.BaseViewModel
-import com.common.httplib.utils.HttpUtil
+import com.common.httpnetwork.databinding.ActivityMainBinding
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var activityMainBinding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(activityMainBinding.root)
+        initData()
 
+//        lifecycleScope.launchWhenCreated {
+//        }
 
-        var viewModel = ViewModelProvider(this)[BaseViewModel::class.java]
+    }
 
+    private fun initData() {
+        val viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
-        lifecycleScope.launchWhenCreated {
-            viewModel.httpRequest {
-                HttpUtil.apiService.searchSongs<String>("潮汐")
-            }
-//            Log.e("当前线程1", Thread.currentThread().name)  // main
-//            val songs = HttpUtil.httpRequest {
-//                Log.e("当前线程2", Thread.currentThread().name)  //  DefaultDispatcher-worker-1
-//                HttpUtil.apiService.searchSongs<String>("潮汐")
-//            }
-//            Log.e("响应参数：", "==>$songs")
-//            Log.e("当前线程3", Thread.currentThread().name)  // main
-
-
+        activityMainBinding.btnCommon.setOnClickListener {
+            viewModel.searchSong("西游记").observe(this, {
+                activityMainBinding.tvResponseBody.text = it?.toString()
+            })
         }
+
+        activityMainBinding.btnDownload.setOnClickListener {
+            Log.e("开始下载", "==========================")
+            val file = File(cacheDir, "zxapp.apk")
+            viewModel.download(file).observe(this, {
+                activityMainBinding.tvDownloadProgress.text =
+                    "下载进度==>${it?.progress}\n文件路径：${file.absolutePath}"
+            })
+        }
+
 
     }
 

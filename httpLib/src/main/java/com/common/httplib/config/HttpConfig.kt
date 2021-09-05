@@ -97,10 +97,9 @@ object HttpConfig {
 
     //   --------------------------------网络状态码-------------------------------------
     const val CODE_NET_ERROR = "4000"
-    const val CODE_TIMEOUT = "4080"
-    const val CODE_JSON_PARSE_ERROR = "4010"
+    const val CODE_TIMEOUT = "4010"
+    const val CODE_JSON_PARSE_ERROR = "4020"
     const val CODE_SERVER_ERROR = "5000"
-
 
 
     //    ----------------------------------接口api地址--------------------------------
@@ -108,5 +107,10 @@ object HttpConfig {
      * 基础api域名
      */
 //    val HTTP_BASE_URL: String = HttpEnvConfig.getHttpDomain()
-    val HTTP_BASE_URL: String = "https://autumnfish.cn/"
+//    val HTTP_BASE_URL: String = "https://autumnfish.cn/"
+//    val HTTP_BASE_URL: String = "https://imtt.dd.qq.com/16891/apk/"
+    val HTTP_BASE_URL: String = "https://api.apiopen.top/"
+
+    val DOWNLOAD_PATH: String =
+        "https://imtt.dd.qq.com/16891/apk/708730C7F45D042B2EFF1738D4F49FE7.apk?fsname=com.tencent.mobileqq_8.8.23_2034.apk&csr=9dcc"
 }

@@ -1,4 +1,6 @@
-package com.common.httplib.model
+package com.common.httplib.base
+
+import com.common.httplib.config.HttpConfig
 
 /**
  *
@@ -12,4 +14,9 @@ package com.common.httplib.model
  * Create: 2021/9/1 2:10 下午
  *
  */
-data class BaseResponse<T>(var code: String, var message: String?, var data: T? = null)
+data class BaseResponse<T>(
+    var code: String? = null,
+    var message: String? = null,
+    var result: T? = null,
+    var isSuccess: Boolean? = code == HttpConfig.RETURN_CODE_SUCCESS
+)
